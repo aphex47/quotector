@@ -36,7 +36,7 @@ def get_quotes(q_used, s):
     api_key='AIzaSyA5EHCy_esmk3QoYFmRUiDKg-pCBgsdSYk'
     #api_key='AIzaSyBl42xTgiNGW2VTtC1Ur_4RIk7AhiDZchY'
     youtube = build('youtube','v3',developerKey = api_key)
-    request = youtube.search().list(q=q_used,part='snippet',type='video', maxResults=20)
+    request = youtube.search().list(q=q_used,part='snippet',type='video', maxResults=10)
     res = request.execute()
     response_dict = dict(res)
     video_ids = []
