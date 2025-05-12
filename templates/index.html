@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html style="height:100%" lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Flask with Bootstrap</title>
+      <!-- Bootstrap CSS CDN -->
+      <style>
+         .hover-check:hover {
+         transition: transform .2s;
+         transform: scale(1.2);
+         }
+      </style>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   </head>
+   <body class="bg-light" style="min-height:100%">
+      <script>
+         $(document).ready(function() {
+             function isEmpty(str) {
+                 return (!str || str.length === 0 );
+             }
+         
+             var searchResults = function () {
+                 $("iframe").parent().remove()
+                 $("#empty-result").remove()
+                 var queryFound = $("#query").val()
+                 var quoteFound = $("#quote").val()
+                 if (isEmpty(queryFound) || isEmpty(quoteFound)) {
+                     return;
+                 }
+                 const newUrl = '/search?query='.concat(queryFound, '&quote=',quoteFound);
+                 window.history.pushState({}, '', newUrl);
+                 $("#load").show()
+         
+                 $.get('/results?query='.concat(queryFound, '&quote=', quoteFound), function(data) {
+                     $("#load").hide()
+                     var html_used = []
+                     if (data.length === 0) {
+                         html_used.push("<h4 id=\"empty-result\" style=\"text-align: center; width: 100%\">No results found!</h4>")
+                     }
+                     for (var i in data) {
+                         url_found = "https://youtube.com/embed/" + data[i][0] + "?start=" + data[i][3]
+                         html_used.push("<div style=\"margin-left: 50px; transition: 0.2s; margin-top: 20px; width: 500px;height: 400px;transition: 0.2s;\" class=\"card shadow-sm hover-check\"><iframe src=\"".concat(url_found, "\" style=\"margin-bottom: 50px;padding-right: 10px;padding-left: 10px;padding-top: 10px;height: 400px;\"></iframe></div>"))
+                     }
+                     $("#results").append(html_used.join(""))
+                 });
+             };
+         
+             $("#searchButton").click(function () {
+                 searchResults();
+             });
+             if (!isEmpty($("#query").val()) && !isEmpty($("#quote").val())) {
+                 searchResults();
+             }
+         })
+      </script>
+      <div class="container py-5" style="min-width: 100%;margin: 0px;padding-left: 0px;font-size: x-small;padding-right: 0px;padding-top: 0 !important;">
+         <div class="card shadow-sm">
+            <div class="card-body">
+               <h1 class="card-title lead text-center" style="font-weight: 500;">Quotector</h1>
+               <h4 class="card-title lead text-center" style="font-size: medium;">Detect quotes in videos</h4>
+               <div class="mb-3">
+                  <input class="form-control me-2" id='query' value="{{query}}" type="search" name="vid-query" placeholder="Video query" aria-label="Search" style="width: 49%;display: inline-block;">
+                  <input class="form-control me-2" id='quote' value="{{quote}}" type="search" name="quote-query" placeholder="Quote" aria-label="Search" style="width: 49%;display: inline-block;">
+               </div>
+               <div class="text-center">
+                  <button id = "searchButton" class="btn btn-primary" type="button" style="float: left;">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+                     </svg>
+                     Search
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id='results' style='min-width: 100%; display: flex; flex-flow: wrap'>
+         <div id='load' style='min-width:100%; display: none'>
+            <div  style='text-align: center'>
+               <div class="spinner-border" role="status">
+                  <span class="sr-only"></span>
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>
