@@ -28,15 +28,6 @@
                  if (isEmpty(queryFound) || isEmpty(quoteFound)) {
                      return;
                  }
-                 new_html_used = []
-                 var dataUsed = [["e8_vmWakyn4","","",7620]]
-                 for (var i in dataUsed) {
-                         url_found = "https://youtube.com/embed/" + dataUsed[i][0] + "?start=" + dataUsed[i][3]
-                         new_html_used.push("<div style=\"margin-left: 50px; transition: 0.2s; margin-top: 20px; width: 500px;height: 400px;transition: 0.2s;\" class=\"card shadow-sm hover-check\"><iframe src=\"".concat(url_found, "\" style=\"margin-bottom: 50px;padding-right: 10px;padding-left: 10px;padding-top: 10px;height: 400px;\"></iframe></div>"))
-                 }
-                 $("#results").append(new_html_used.join(""))
-                 return;
-
                  const newUrl = '/search?query='.concat(queryFound, '&quote=',quoteFound);
                  window.history.pushState({}, '', newUrl);
                  $("#load").show()

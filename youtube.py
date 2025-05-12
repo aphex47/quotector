@@ -4,6 +4,7 @@ from whoosh.fields import Schema, TEXT, ID
 from whoosh.qparser import QueryParser
 from whoosh.filedb.filestore import RamStorage
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
 from apiclient.discovery import build
 
 def jaccard_index(tokens, str):
@@ -52,12 +53,12 @@ def get_quotes(q_used, s):
     ix = storage.create_index(schema)
     # Function to add documents to the index
     results_found = []
-
+    yt_api = YoutubeTranscriptApi(proxy_config=WebshareProxyConfig(proxy_username="pyfnbgfw-1", proxy_password="zh41ld1wxp59"))
     for video_id in video_ids:
         try:
             print(f"for video {count}")
 
-            transcript = YouTubeTranscriptApi.get_transcript(video_id)
+            transcript = yt_api.get_transcript(video_id)
             full_text = []
             snippet_dict[video_id] = []
             for entry in transcript:
