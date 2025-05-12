@@ -54,12 +54,11 @@ def get_quotes(q_used, s):
     # Function to add documents to the index
     results_found = []
     print("trying w proxy")
-    yt_api = YouTubeTranscriptApi(proxy_config=WebshareProxyConfig(proxy_username="pyfnbgfw", proxy_password="zh41ld1wxp59"))
     for video_id in video_ids:
         try:
             print(f"for video {count}")
 
-            transcript = yt_api.get_transcript(video_id)
+            transcript = YouTubeTranscriptApi.get_transcript(video_id, proxies={"https": "http://spfrxkwruc:cC6N1wBtvu~qa4Ng5z@gate.decodo.com:10001"})
             full_text = []
             snippet_dict[video_id] = []
             for entry in transcript:
